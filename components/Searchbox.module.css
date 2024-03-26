@@ -1,0 +1,109 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 400;
+  color: black;
+}
+
+.search_container {
+  /* display: flex;
+  justify-content: space-between; */
+  padding: 0 0.4rem 0 1rem;
+  border-radius: 2rem;
+  border: 3px solid navy;
+  width: 30rem;
+}
+
+.input_search {
+  border: none;
+  height: 2rem;
+  font-size: 1rem;
+  width: 23rem;
+  outline: none;
+}
+
+.icon_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.btn {
+  color: gray;
+  background-color: #ffffff;
+  border: none;
+}
+
+.btn:hover,
+.btn:active {
+  cursor: pointer;
+  color: black;
+  background-color: #ffffff;
+}
+
+.autocompleteContainer {
+  position: absolute;
+  z-index: 999; /* 确保悬浮框在其他内容上方 */
+  left: 50%;
+  top: 10rem;
+  width: 27rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  background-color: white;
+  transform: translateX(-57%);
+  font-size: small;
+}
+
+.autocompleteContent {
+  overflow-y: auto;
+}
+
+.autocompleteList {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.autocompleteItem {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocompleteItem a {
+  text-decoration: none;
+  color: gray;
+}
+
+.autocompleteItem:hover {
+  background-color: #f0f0f0; /* 悬浮时的背景色 */
+}
+
+.input_search {
+  border: none;
+  height: 2rem;
+  font-size: 1rem;
+  width: 23rem;
+  outline: none;
+}
+
+/* 媒体查询用于手机 */
+@media (max-width: 767px) {
+  .search_container {
+    width: 90%; /* 将搜索框宽度设置为父容器的100% */
+  }
+}

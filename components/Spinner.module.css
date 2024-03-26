@@ -1,0 +1,40 @@
+.lds_ring {
+  display: inline-block;
+  position: relative;
+  width: var(--ring-size, 80px); /* 使用变量设置默认大小 */
+  height: var(--ring-size, 80px); /* 使用变量设置默认大小 */
+}
+
+.lds_ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: calc(var(--ring-size, 80px) * 0.8); /* 使用变量计算宽度 */
+  height: calc(var(--ring-size, 80px) * 0.8); /* 使用变量计算高度 */
+  margin: calc(var(--ring-size, 80px) * 0.1); /* 使用变量计算间距 */
+  border: calc(var(--ring-size, 80px) * 0.1) solid #2629ec; /* 使用变量计算边框宽度 */
+  border-radius: 50%;
+  animation: lds_ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #2629ec transparent transparent transparent;
+}
+
+.lds_ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds_ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds_ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds_ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -3,15 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start -p 3001",
+    "lint": "next lint -p 3001"
   },
   "dependencies": {
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "highcharts": "^11.4.0",
+    "highcharts-more": "^0.1.7",
+    "highcharts-react-official": "^3.2.1",
+    "jquery": "^3.7.1",
+    "luxon": "^3.4.4",
+    "next": "14.1.4",
+    "next-share": "^0.27.0",
+    "popper.js": "^1.16.1",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.1.4"
+    "react-bootstrap": "^2.10.2",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "eslint": "^8",

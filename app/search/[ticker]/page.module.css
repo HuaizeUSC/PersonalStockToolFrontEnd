@@ -1,0 +1,183 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.searchContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+  align-content: start;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.descriptionTicker {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.descriptionTickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.star:hover {
+  color: orange;
+  cursor: pointer;
+}
+
+.starfill {
+  color: orange;
+}
+
+.starfill:hover {
+  color: rgb(214, 140, 3);
+  cursor: pointer;
+}
+
+.descriptionName {
+  font-size: medium;
+  color: gray;
+}
+
+.descriptionExchange {
+  font-size: small;
+  color: gray;
+}
+
+.descriptionButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.descriptionBuy {
+  background-color: green;
+  color: white;
+  width: 3.5rem;
+  border: none;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.descriptionBuy:hover {
+  background-color: rgb(3, 87, 3);
+}
+
+.descriptionSell {
+  background-color: red;
+  color: white;
+  width: 3.5rem;
+  border: none;
+  border-radius: 10px;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.descriptionSell:hover {
+  background-color: rgb(196, 3, 3);
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.icon {
+  height: 5rem;
+  width: 5rem;
+}
+
+.iconTimeOpen {
+  font-size: small;
+  font-weight: 500;
+  color: green;
+}
+
+.iconTimeClose {
+  font-size: small;
+  font-weight: 600;
+  color: red;
+}
+
+.priceUp {
+  color: red;
+}
+
+.priceDown {
+  color: green;
+}
+
+.navlink:hover {
+  text-decoration: none;
+  background-color: rgb(238, 235, 235);
+}
+
+.summaryContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 3rem;
+}
+
+.summaryLeftContainer {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  margin-bottom: 2rem;
+  width: 50%;
+}
+
+.tableContainer {
+  width: 25rem;
+}
+
+.insightChart {
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  .searchContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-content: start;
+    gap: 0.2rem;
+    padding: 0.5rem;
+  }
+  .summaryContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .summaryLeftContainer {
+    align-items: center;
+  }
+  .updateTime {
+    font-size: 0.8rem;
+  }
+}

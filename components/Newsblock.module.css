@@ -1,0 +1,37 @@
+.image {
+  width: 5rem;
+  object-fit: fill;
+}
+
+.newsContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  height: 6rem;
+  overflow: hidden;
+  background-color: rgb(249, 247, 247);
+  border: solid 1px rgb(215, 212, 212);
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.newsContainer:hover {
+  cursor: pointer;
+  background-color: rgb(221, 219, 219);
+}
+
+.newsTitle {
+  width: 80%;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 767px) {
+  .image {
+    width: 100%;
+  }
+  .newsContainer {
+    flex-direction: column;
+    height: auto;
+  }
+}
