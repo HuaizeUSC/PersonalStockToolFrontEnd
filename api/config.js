@@ -1,3 +1,3 @@
-export const BASE_URL = "http://127.0.0.1:3000/api/";
-export const WATCHLIST_URL = "http://127.0.0.1:3000/watchlist/";
-export const PORTFOLIO_URL = "http://127.0.0.1:3000/portfolio/";
+export const BASE_URL = "https://pstbackend.azurewebsites.net/api/";
+export const WATCHLIST_URL = "https://pstbackend.azurewebsites.net/watchlist/";
+export const PORTFOLIO_URL = "https://pstbackend.azurewebsites.net/portfolio/";

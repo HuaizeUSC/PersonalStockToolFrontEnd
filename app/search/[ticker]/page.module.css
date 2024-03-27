@@ -155,11 +155,24 @@
 }
 
 .tableContainer {
-  width: 25rem;
+  width: 100%;
 }
 
-.insightChart {
-  width: auto;
+.tableContainer {
+  width: 30rem;
+}
+
+.insiderChartContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  width: 90%;
+}
+
+.insiderChart {
+  width: 100%;
 }
 
 @media (max-width: 767px) {
@@ -179,5 +192,8 @@
   }
   .updateTime {
     font-size: 0.8rem;
+  }
+  .insiderChartContainer {
+    flex-direction: column;
   }
 }

@@ -6,6 +6,7 @@ import Spinner from "./Spinner";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+let timeout;
 const Searchbox = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -40,18 +41,21 @@ const Searchbox = () => {
     setIsShowing(false);
   };
   const handleChange = async (e) => {
-    setIsShowing(true);
+    clearTimeout(timeout);
     const value = e.target.value;
-    if (value === "") setIsShowing(false);
     setInputValue(value.toUpperCase());
-    setIsLoading(true);
-    try {
-      const autoCompleteList = await getAutoComplete(value);
-      setAutoComplete(autoCompleteList.data);
-    } catch (error) {
-      console.error("Error fetching autocomplete data:", error);
-    }
-    setIsLoading(false);
+    timeout = setTimeout(async () => {
+      setIsShowing(true);
+      if (value === "") setIsShowing(false);
+      setIsLoading(true);
+      try {
+        const autoCompleteList = await getAutoComplete(value);
+        setAutoComplete(autoCompleteList.data);
+      } catch (error) {
+        console.error("Error fetching autocomplete data:", error);
+      }
+      setIsLoading(false);
+    }, 500);
   };
   const handleCloseMessage = (e) => {
     e.preventDefault();

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Newsblock.module.css";
 import { Button, FormControl, Modal } from "react-bootstrap";
 import { updatePortfolio } from "@/api/updatePortfolio";
 import { updateMoney } from "@/api/updateMoney";
 import { removeSinglePortfolio } from "@/api/removeSinglePortfolio";
+import { TickerContext } from "@/context/ticker";
+import { getSinglePortfolio } from "@/api/getSinglePortfolio";
 
 export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage }) {
   const [show, setShow] = useState(false);
   const [modalType, setModalType] = useState("Buy");
   const [modalValue, setModalValue] = useState(0);
-  const [portfolio, setPortfolio] = useState(null);
-  const [money, setMoney] = useState(moneyP);
+  const { money, setMoney, portfolio, setPortfolio } = useContext(TickerContext);
   const handleCloseModal = () => setShow(false);
   const handleShowBuy = () => {
     setShow(true);
@@ -34,8 +35,10 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
       newPortfolio.change = newPortfolio.avgcost - data.price;
       newPortfolio.price = data.price;
       newPortfolio.marketvalue = data.price * newPortfolio.quantity;
-      console.log(newPortfolio);
-      const responseUpdatePortfolio = updatePortfolio(newPortfolio);
+      const responseUpdatePortfolio = await updatePortfolio(newPortfolio);
+      const newPortfolioResponse = await getSinglePortfolio(data.ticker);
+      if (data.ticker == portfolio.ticker) setPortfolio(newPortfolioResponse.data);
+
       updateMoney(money - modalValue * data.price);
       setMoney(money - modalValue * data.price);
       setMessage({ type: "success", message: `${data.ticker} bought successfully!` });
@@ -51,10 +54,12 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
       newPortfolio.price = data.price;
       newPortfolio.marketvalue = data.price * newPortfolio.quantity;
       if (newPortfolio.quantity <= 0) {
-        removeSinglePortfolio(newPortfolio.ticker);
+        await removeSinglePortfolio(newPortfolio.ticker);
       } else {
-        const responseUpdatePortfolio = updatePortfolio(newPortfolio);
+        const responseUpdatePortfolio = await updatePortfolio(newPortfolio);
       }
+      const newPortfolioResponse = await getSinglePortfolio(data.ticker);
+      if (data.ticker == portfolio.ticker) setPortfolio(newPortfolioResponse.data);
       updateMoney(money + modalValue * data.price);
       setMoney(money + modalValue * data.price);
       setMessage({ type: "success", message: `${data.ticker} sold successfully!` });
@@ -62,9 +67,6 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
     }
     handleSubmit();
   };
-  useEffect(() => {
-    setPortfolio({ data });
-  }, []);
   if (data.quantity <= 0) return <></>;
   return (
     <div>
@@ -82,7 +84,7 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
         </Modal.Header>
         <Modal.Body className="d-flex flex-column gap-2">
           <div className="fs-6">Current Price: {data.price}</div>
-          <div className="fs-6">Money in Wallet: ${money}</div>
+          <div className="fs-6">Money in Wallet: ${money.toFixed(2)}</div>
           <div className="d-flex gap-1">
             <div className="fs-6">Quantity:</div>
             <FormControl className="form-control-sm" type="number" min="" onChange={handleModalChange}></FormControl>
@@ -92,7 +94,7 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-between">
           <div>Total: {(modalValue * data.price).toFixed(2)}</div>
-          {(modalType === "Buy" && modalValue * data.price > money) || modalValue == 0 || (modalType === "Sell" && modalValue > portfolio.quantity) ? (
+          {(modalType === "Buy" && modalValue * data.price > money) || modalValue == 0 || (modalType === "Sell" && modalValue > data.quantity) ? (
             <Button className="btn-sm btn-success" disabled>
               {modalType === "Buy" ? "Buy" : "Sell"}
             </Button>
@@ -108,8 +110,8 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
           <div className="fw-semibold">{data.ticker}</div>
           <div>{data.name}</div>
         </div>
-        <div className="row p-3">
-          <div className="col-md-6 col-sm-12 d-flex justify-content-between">
+        <div className="row p-3 justify-content-between">
+          <div className="col-md-5 col-sm-12 d-flex justify-content-between">
             <div className="d-flex flex-column">
               <div className="fw-semibold">Quantity:</div>
               <div className="fw-semibold">Avg. Cost/Share:</div>
@@ -121,7 +123,7 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
               <div>{data.totalcost.toFixed(2)}</div>
             </div>
           </div>
-          <div className="col-md-6 col-sm-12 d-flex justify-content-between">
+          <div className="col-md-5 col-sm-12 d-flex justify-content-between">
             <div className="d-flex flex-column">
               <div className="fw-semibold">Change:</div>
               <div className="fw-semibold">Current Price:</div>
@@ -129,11 +131,11 @@ export default function PortfolioBlock({ data, moneyP, handleSubmit, setMessage 
             </div>
             <div className={`d-flex flex-column fw-semibold ${data.change.toFixed(2) > 0 ? "text-success" : data.change.toFixed(2) == 0 ? "" : "text-danger"}`}>
               <div>
-                {data.change > 0 ? (
+                {data.change.toFixed(2) > 0 ? (
                   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-caret-up-fill" viewBox="0 0 15 15">
                     <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
                   </svg>
-                ) : data.change == 0 ? (
+                ) : data.change.toFixed(2) == 0 ? (
                   <></>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-caret-down-fill" viewBox="0 0 15 15">

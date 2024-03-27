@@ -4,7 +4,6 @@ export async function updatePortfolio(data) {
   const api = `${PORTFOLIO_URL}update`;
   try {
     const response = await axios.post(api, data);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching watchlist data:", error);

@@ -119,6 +119,7 @@ const TickerProvider = ({ children, params }) => {
     setMoney,
     setLatestPrice,
     setWatchlist,
+    setPortfolio,
   };
   return <TickerContext.Provider value={contextValue}>{children}</TickerContext.Provider>;
 };

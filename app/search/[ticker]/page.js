@@ -29,9 +29,10 @@ import PortfolioPage from "@/app/portfolio/page";
 import { updatePortfolio } from "@/api/updatePortfolio";
 import { updateMoney } from "@/api/updateMoney";
 import { TickerContext } from "@/context/ticker";
+import { removeSinglePortfolio } from "@/api/removeSinglePortfolio";
 
 export default function TickerPage({ params }) {
-  const { isLoading, description, latestPrice, peers, hourly, historic, trends, earnings, news, insider, watchlist, marketStatus, money, portfolio, setMoney, setLatestPrice, setWatchlist } = useContext(TickerContext);
+  const { isLoading, description, latestPrice, peers, hourly, historic, trends, earnings, news, insider, watchlist, marketStatus, money, portfolio, setMoney, setLatestPrice, setWatchlist, setPortfolio } = useContext(TickerContext);
   // const [isLoading, setIsLoading] = useState(false);
   // const [marketStatus, setMarketStatus] = useState(null);
   const [activeTab, setActiveTab] = useState("Summary");
@@ -74,7 +75,9 @@ export default function TickerPage({ params }) {
       newPortfolio.change = newPortfolio.avgcost - latestPrice.c;
       newPortfolio.price = latestPrice.c;
       newPortfolio.marketvalue = latestPrice.c * newPortfolio.quantity;
-      const responseUpdatePortfolio = updatePortfolio(newPortfolio);
+      const responseUpdatePortfolio = await updatePortfolio(newPortfolio);
+      const newPortfolioResponse = await getSinglePortfolio(newPortfolio.ticker);
+      setPortfolio(newPortfolioResponse.data);
       updateMoney(money - modalValue * latestPrice.c);
       setMoney(money - modalValue * latestPrice.c);
       setMessage({ type: "success", message: "Successfully buy the stock" });
@@ -89,7 +92,13 @@ export default function TickerPage({ params }) {
       newPortfolio.change = newPortfolio.avgcost - latestPrice.c;
       newPortfolio.price = latestPrice.c;
       newPortfolio.marketvalue = latestPrice.c * newPortfolio.quantity;
-      const responseUpdatePortfolio = updatePortfolio(newPortfolio);
+      if (newPortfolio.quantity <= 0) {
+        await removeSinglePortfolio(newPortfolio.ticker);
+      } else {
+        const responseUpdatePortfolio = await updatePortfolio(newPortfolio);
+      }
+      const newPortfolioResponse = await getSinglePortfolio(newPortfolio.ticker);
+      setPortfolio(newPortfolioResponse.data);
       updateMoney(money + modalValue * latestPrice.c);
       setMoney(money + modalValue * latestPrice.c);
       setMessage({ type: "success", message: "Successfully sell the stock" });
@@ -204,7 +213,7 @@ export default function TickerPage({ params }) {
             </Modal.Header>
             <Modal.Body className="d-flex flex-column gap-2">
               <div className="fs-6">Current Price: {latestPrice.c}</div>
-              <div className="fs-6">Money in Wallet: ${money}</div>
+              <div className="fs-6">Money in Wallet: ${money.toFixed(2)}</div>
               <div className="d-flex gap-1">
                 <div className="fs-6">Quantity:</div>
                 <FormControl className="form-control-sm" type="number" min="" onChange={handleModalChange}></FormControl>
@@ -213,7 +222,7 @@ export default function TickerPage({ params }) {
               {modalType == "Sell" && modalValue > portfolio.quantity && <div className="fs text-danger">Not enough quantity in portfolio</div>}
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-between">
-              <div>Total: {modalValue * latestPrice.c}</div>
+              <div>Total: {(modalValue * latestPrice.c).toFixed(2)}</div>
               {(modalType === "Buy" && modalValue * latestPrice.c > money) || modalValue == 0 || (modalType === "Sell" && modalValue > portfolio.quantity) ? (
                 <Button className="btn-sm btn-success" disabled>
                   {modalType === "Buy" ? "Buy" : "Sell"}
@@ -375,7 +384,7 @@ export default function TickerPage({ params }) {
               </div>
               <div className={`tab-pane ${activeTab === "Insights" && "active"}`}>
                 {insider && (
-                  <div className="d-flex flex-column align-items-center gap-4 mb-3">
+                  <div className={`d-flex flex-column align-items-center gap-4 mb-3 ${styles.insiderContainer}`}>
                     <div className="fw-semibold fs-3">Insider Sentiments</div>
                     <table className={`table table-sm align-middle text-center ${styles.tableContainer}`}>
                       <thead>
@@ -433,13 +442,10 @@ export default function TickerPage({ params }) {
                         </tr>
                       </tbody>
                     </table>
-                    <div className="row">
-                      <div className="col-lg-6 col-sm-12">
-                        <div className={styles.insightChart}>{trends && <TrendsChart trends={trends} />}</div>
-                      </div>
-                      <div className="col-lg-6 col-sm-12">
-                        <div className={styles.insightChart}>{earnings && <EarningsChart earnings={earnings} />}</div>
-                      </div>
+                    <div className={styles.insiderChartContainer}>
+                      <div className={styles.insiderChart}>{trends && <TrendsChart trends={trends} />}</div>
+
+                      <div className={styles.insiderChart}>{earnings && <EarningsChart earnings={earnings} />}</div>
                     </div>
                   </div>
                 )}

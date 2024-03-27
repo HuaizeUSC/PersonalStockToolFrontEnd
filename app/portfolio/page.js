@@ -1,17 +1,18 @@
 "use client";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Spinner from "@/components/Spinner";
 import { getPortfolios } from "@/api/getPortfolios";
 import { updatePortfolio } from "@/api/updatePortfolio";
 import PortfolioBlock from "@/components/PortfolioBlock";
 import { getMoney } from "@/api/getMoney";
+import { TickerContext } from "@/context/ticker";
 
 export default function PortfolioPage() {
   const [portfolios, setPortfolios] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const [money, setMoney] = useState(0);
+  const { money, setMoney } = useContext(TickerContext);
   const [update, setUpdate] = useState(0);
 
   const handleSoldout = () => {
