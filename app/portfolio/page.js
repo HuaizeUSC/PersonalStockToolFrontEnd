@@ -62,7 +62,7 @@ export default function PortfolioPage() {
       {(!portfolios || portfolios.length === 0) && (
         <div className={`d-flex justify-content-between alert alert-warning`}>
           <div></div>
-          <div>Currently you don't have any stock. </div>
+          <div>Currently you do not have any stock. </div>
           <div></div>
         </div>
       )}
