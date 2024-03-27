@@ -1,10 +1,14 @@
+"use client";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import indicators from "highcharts/indicators/indicators";
 import vbp from "highcharts/indicators/volume-by-price";
-
-indicators(Highcharts);
-vbp(Highcharts);
+if (typeof Highcharts === "object") {
+  indicators(Highcharts);
+}
+if (typeof Highcharts === "object") {
+  vbp(Highcharts);
+}
 
 export default function Chart({ data, ticker = "AAPL" }) {
   const seriesData = data.map((item) => [item.t, item.o, item.h, item.l, item.c]);
