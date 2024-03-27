@@ -349,7 +349,9 @@ export default function TickerPage({ params }) {
                       </div>
                       <div>
                         <span className="fw-medium">Webpage: </span>
-                        <a href={description.weburl}>{description.weburl}</a>
+                        <a target="_blank" href={description.weburl}>
+                          {description.weburl}
+                        </a>
                       </div>
                       <div className="d-flex flex-column align-items-center">
                         <div className="fw-medium">Peers: </div>
