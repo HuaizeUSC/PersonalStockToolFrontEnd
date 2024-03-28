@@ -143,10 +143,13 @@ export default function TickerPage({ params }) {
   //     setIsLoading(false);
   //   }
   // };
-  // useEffect(() => {
-  //   setMarketStatus(checkMarketStatus());
-  //   fetchDescription();
-  // }, [params]);
+  useEffect(() => {
+    const update = async () => {
+      const watchlistResponse = await checkWatchlist(params.ticker);
+      setWatchlist(watchlistResponse.data);
+    };
+    update();
+  }, []);
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const priceResponse = await getLatestPrice(params.ticker);
